@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>Opentok Quick Start</title>
+    <script src='https://swww.tokbox.com/webrtc/v2.0/js/TB.min.js'></script>
+    <script type="text/javascript">
+  var apiKey    = "44704422";
+  var sessionId = "2_MX40NDcwNDQyMn5-U2F0IE1hciAyMiAxNTo0NzoxMSBQRFQgMjAxNH4wLjE3MDYyMzY2fg";
+  var token     = "T1==cGFydG5lcl9pZD00NDcwNDQyMiZzZGtfdmVyc2lvbj10YnJ1YnktdGJyYi12MC45MS4yMDExLTAyLTE3JnNpZz1jNzEwMDgwMTZiNGUzYzYzYjFlMmVmNjJiYTczNzYwNjZlNzNiMWQxOnJvbGU9cHVibGlzaGVyJnNlc3Npb25faWQ9JmNyZWF0ZV90aW1lPTEzOTU1MzAwODgmbm9uY2U9MC42NjgzMjg0MTM4ODAwMDA2";
+ 
+  function sessionConnectedHandler (event) {
+     session.publish( publisher );
+     subscribeToStreams(event.streams);
+  }
+  function subscribeToStreams(streams) {
+    for (var i = 0; i < streams.length; i++) {
+        var stream = streams[i];
+        if (stream.connection.connectionId 
+               != session.connection.connectionId) {
+            session.subscribe(stream);
+        }
+    }
+  }
+  function streamCreatedHandler(event) {
+    subscribeToStreams(event.streams);
+  }
+ 
+  var publisher = TB.initPublisher(apiKey);
+  var session   = TB.initSession(sessionId);
+ 
+  session.connect(apiKey, token);
+  session.addEventListener("sessionConnected", 
+                           sessionConnectedHandler);
+ 
+  session.addEventListener("streamCreated", 
+                           streamCreatedHandler);
+</script>
+  </head>
+  <body>
+    <h1>Awesome video feed!</h1>
+    <div id="myPublisherDiv"></div>
+  </body>
+</html>
